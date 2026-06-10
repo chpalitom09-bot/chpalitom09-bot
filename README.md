@@ -1,3 +1,8 @@
+<p align="center">
+  <img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=WIKIMIND&fontSize=55&color=0:000000,100:1f1c2c&fontColor=ffffff"/>
+</p>
+
+
 <h1> Hello here are my stats ! </h1>
 <p align="center">
   <img width="49%" src="https://github-readme-stats.vercel.app/api?username=chpalitom09-bot&theme=vue-dark&show_icons=true&hide_border=true&count_private=true"/>
