@@ -1,4 +1,4 @@
-<img src="./images/windows-11-bloom-8k-7680x4800-16834" alt="Duval Tom's Github Cover Image Banner"/>
+<img src="./images/windows-11-bloom-8k-7680x4800-16834.jpg" alt="Duval Tom's Github Cover Image Banner"/>
 
 
 
