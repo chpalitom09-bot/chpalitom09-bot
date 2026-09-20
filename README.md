@@ -1,6 +1,7 @@
-<p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&height=180&text=WIKIMIND&fontSize=55&color=0:000000,100:1f1c2c&fontColor=ffffff"/>
-</p>
+<img src="./images/windows-11-bloom-8k-7680x4800-16834" alt="Duval Tom's Github Cover Image Banner"/>
+
+
+
 
 
 <h1> Hello here are my stats ! </h1>
