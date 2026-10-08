@@ -53,7 +53,7 @@ main{padding:56px 48px 80px}
 #panel{position:fixed;top:0;right:0;bottom:0;width:min(880px,100%);background:var(--paper);color:var(--ink);transform:translateX(100%);transition:transform .38s cubic-bezier(.2,.7,.2,1);z-index:21;display:flex;flex-direction:column;visibility:hidden}
 #panel.on{transform:none;visibility:visible}
 .ph{display:flex;align-items:center;gap:20px;padding:18px 36px;border-bottom:1px solid var(--pline);flex-wrap:wrap}
-.ph h3{margin:0;font-size:1.1rem;font-weight:600;letter-spacing:-.01em;margin-right:auto}
+.ph h3{display:flex;align-items:center;margin:0;font-size:1.1rem;font-weight:600;letter-spacing:-.01em;margin-right:auto}
 .ph a,.ph button{color:var(--ink);font:inherit;font-size:.92rem;text-decoration:none;background:none;border:0;border-bottom:1px solid #b9b9c0;padding:0 0 1px;cursor:pointer}
 .ph a:hover,.ph button:hover{border-color:var(--ink)}
 .ph :focus-visible{outline-color:var(--ink)}
@@ -77,6 +77,45 @@ main{padding:56px 48px 80px}
 .md [align=center]{text-align:center}
 .msg{color:var(--ink2);padding:56px 0}
 
+/* logos */
+.id{display:flex;gap:20px;align-items:flex-start}
+.logo{width:56px;height:56px;flex:none;border-radius:13px;object-fit:cover;background:#0d0d0d;border:1px solid var(--line);display:block;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .3s}
+.logo.contain{object-fit:contain;padding:11px}
+.logo.ltr{display:grid;place-items:center;font-size:1.4rem;font-weight:500;color:var(--mut)}
+.row:hover .logo{transform:scale(1.08) rotate(-3deg);border-color:var(--dim)}
+.ph .logo{width:30px;height:30px;border-radius:8px}
+.ph .logo.contain{padding:5px}
+.ph .logo.ltr{font-size:.9rem}
+.ph .logo{border-color:var(--pline);background:#111}
+/* animations */
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes mask{from{transform:translateY(105%)}to{transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+aside h1{overflow:hidden;padding-bottom:.08em}
+aside h1 span span{display:inline-block;animation:mask 1s cubic-bezier(.2,.8,.2,1) both}
+aside p{animation:rise .9s .35s cubic-bezier(.2,.8,.2,1) both}
+.me{animation:rise .9s .5s cubic-bezier(.2,.8,.2,1) both}
+.head{position:relative;border-bottom:0;animation:rise .8s .2s both}
+.head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);transform-origin:left;animation:grow 1.2s .3s cubic-bezier(.2,.8,.2,1) both}
+.row{position:relative;animation:rise .85s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(.45s + var(--i)*.09s);overflow:hidden}
+.row::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.07),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}
+.row:hover::before{opacity:1}
+.row>*{position:relative}
+.row h2{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.row:hover h2,.row:focus-visible h2{transform:translateX(14px)}
+.row .repo{transition:transform .4s .03s cubic-bezier(.2,.8,.2,1),color .3s}
+.row:hover .repo{transform:translateX(14px);color:var(--mut)}
+.row .read{transition:transform .35s,color .3s}
+.row:hover .read{color:var(--fg);transform:translateX(-6px)}
+.acts a,.acts button{border-bottom-color:transparent;background:linear-gradient(currentColor,currentColor) left bottom/100% 1px no-repeat;transition:background-size .35s cubic-bezier(.2,.8,.2,1),color .3s}
+.acts a,.acts button{background-image:linear-gradient(var(--dim),var(--dim)),linear-gradient(var(--fg),var(--fg));background-size:100% 1px,0 1px;background-position:left bottom;background-repeat:no-repeat}
+.acts a:hover,.acts button:hover{background-size:100% 1px,100% 1px;border-color:transparent}
+.badge{transition:background .3s,color .3s}
+.row:hover .badge{background:var(--fg);color:#000}
+.sum{transition:color .3s}
+.row:hover .sum{color:#cfcfcf}
+.reveal{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.md>*{animation:rise .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--k,0)*.04s)}
 @media (max-width:860px){
   .page{display:block}
   aside{position:static;height:auto;padding:40px 24px 32px;border:0;gap:40px}
@@ -119,25 +158,42 @@ const NAME  = "chpalitom09";   /* ← mets ton prénom et nom ici */
 const PROJECTS = [
   { repo:"chpalitom09-bot/ChromeOptimizer", title:"ChromeOptimizer",
     pages:"https://chpalitom09-bot.github.io/ChromeOptimizer/",
+    logo:"https://raw.githubusercontent.com/chpalitom09-bot/ChromeOptimizer/main/icon128.png",
     fallback:"Un outil pour optimiser Google Chrome." },
   { repo:"WikimindAI/Wikimind", title:"Wikimind AI",
+    logo:"https://raw.githubusercontent.com/WikimindAI/Wikimind/main/wikimindi.png",
     fallback:"Un projet d'intelligence artificielle autour de la connaissance." },
   { repo:"chpalitom09-bot/TomatoList", title:"TomatoList",
+    pages:"https://chpalitom09-bot.github.io/TomatoList/",
+    logo:"https://raw.githubusercontent.com/chpalitom09-bot/TomatoList/main/icon.svg",
     fallback:"Une liste de tâches construite autour de la méthode Pomodoro." },
   { repo:"chpalitom09-bot/Open-food-calories", title:"OpenFoodCalories",
+    logo:"data:image/jpeg;base64,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", /* logo.png du dépôt (2048px), réduit à 144px */
     fallback:"Un outil pour consulter les calories des aliments." },
   { repo:"WikimindAI/LocalLLM", title:"LocalLLM",
+    logo:"https://raw.githubusercontent.com/WikimindAI/LocalLLM/main/assets/logo-dark.svg", pos:"left center",
     fallback:"Faire tourner des modèles de langage en local." },
   { repo:"chpalitom09-bot/ColorWeb", title:"ColorWeb",
+    logo:"https://raw.githubusercontent.com/chpalitom09-bot/ColorWeb/main/icon-192.png",
     fallback:"Un projet web autour des couleurs." },
   { repo:"pollinations/pollinations", title:"Pollinations", badge:"Contributeur",
+    logo:"https://raw.githubusercontent.com/pollinations/pollinations/main/packages/ui/src/brand/mark-white.svg", fit:"contain",
     fallback:"Plateforme open source d'IA générative, accessible à tous." }
 ];
 /* ============================= */
 
 const $ = (s, r=document) => r.querySelector(s);
 const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
-$("#name").textContent = NAME;
+(function(){
+  const h = $("#name");
+  NAME.split(" ").forEach((w,i) => {
+    const wrap = document.createElement("span");
+    wrap.style.cssText = "display:inline-block;overflow:hidden;padding-bottom:.1em;margin-right:.22em";
+    const sp = document.createElement("span");
+    sp.textContent = w; sp.style.animationDelay = (i*0.12) + "s";
+    wrap.appendChild(sp); h.appendChild(wrap);
+  });
+})();
 $("#gh").href = "https://github.com/" + OWNER;
 $("#copy").textContent = "© " + new Date().getFullYear() + " " + NAME;
 $("#count").textContent = PROJECTS.length + " projets";
@@ -177,14 +233,30 @@ function summarize(p, d){
   return p.fallback;
 }
 
+function logoHTML(p){
+  if(!p.logo) return '<div class="logo ltr">' + esc(p.title[0]) + '</div>';
+  return '<img class="logo' + (p.fit === "contain" ? ' contain' : '') + '" src="' + p.logo + '" alt="" width="56" height="56" decoding="async"' +
+    (p.pos ? ' style="object-position:' + p.pos + '"' : '') + '>';
+}
+function armLogos(root, p){
+  root.querySelectorAll("img.logo").forEach(im => im.addEventListener("error", () => {
+    const d = document.createElement("div");
+    d.className = "logo ltr"; d.textContent = p.title[0]; im.replaceWith(d);
+  }, {once:true}));
+}
 const list = $("#list");
-PROJECTS.forEach(p => {
+PROJECTS.forEach((p, idx) => {
   const code = "https://github.com/" + p.repo;
   const row = document.createElement("article");
-  row.className = "row"; row.tabIndex = 0;
+  row.className = "row"; row.tabIndex = 0; row.style.setProperty("--i", idx);
+  row.addEventListener("pointermove", e => {
+    const r = row.getBoundingClientRect();
+    row.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    row.style.setProperty("--my", (e.clientY - r.top) + "px");
+  });
   row.innerHTML =
-    '<div><h2>' + esc(p.title) + (p.badge ? '<span class="badge">' + esc(p.badge) + '</span>' : '') + '</h2>' +
-    '<div class="repo">' + esc(p.repo) + '</div></div>' +
+    '<div class="id">' + logoHTML(p) + '<div><h2>' + esc(p.title) + (p.badge ? '<span class="badge">' + esc(p.badge) + '</span>' : '') + '</h2>' +
+    '<div class="repo">' + esc(p.repo) + '</div></div></div>' +
     '<p class="sum"><span class="sk"></span><span class="sk" style="width:65%;display:block"></span></p>' +
     '<div class="acts">' +
       (p.pages ? '<a target="_blank" rel="noopener" href="' + p.pages + '">GitHub Pages</a>' : '') +
@@ -195,6 +267,7 @@ PROJECTS.forEach(p => {
   const open = () => openPanel(p, code);
   row.addEventListener("click", open);
   row.addEventListener("keydown", e => { if(e.key === "Enter" && e.target === row) open(); });
+  armLogos(row, p);
   list.appendChild(row);
 
   loadData(p).then(d => {
@@ -213,7 +286,8 @@ const panel = $("#panel"), veil = $("#veil"), body = $("#body");
 let lastFocus = null;
 async function openPanel(p, code){
   lastFocus = document.activeElement;
-  $("#pt").textContent = p.title;
+  $("#pt").innerHTML = logoHTML(p).replace(/width="56" height="56"/, 'width="30" height="30"') + ' <span style="vertical-align:middle;margin-left:10px">' + esc(p.title) + '</span>';
+  armLogos($("#pt"), p);
   $("#pl").innerHTML =
     (p.pages ? '<a target="_blank" rel="noopener" href="' + p.pages + '">GitHub Pages</a>' : '') +
     '<a target="_blank" rel="noopener" href="' + code + '">Voir le code</a>';
@@ -235,6 +309,7 @@ async function openPanel(p, code){
     else { a.target = "_blank"; a.rel = "noopener"; }
   });
   body.querySelectorAll("img").forEach(im => im.loading = "lazy");
+  [...body.children].slice(0,14).forEach((el,k) => el.style.setProperty("--k", k));
   if(!body.querySelector("img") && body.textContent.replace(/\s+/g," ").trim().toLowerCase() === p.title.toLowerCase()){
     body.insertAdjacentHTML("beforeend", '<div class="msg">Ce README ne contient pas encore de description.</div>');
   }
