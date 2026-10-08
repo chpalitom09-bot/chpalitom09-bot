@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Projets · chpalitom09</title>
+<meta name="description" content="Mes principaux projets open source.">
+<meta name="color-scheme" content="dark">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<style>
+:root{
+  --bg:#000;--fg:#f5f5f5;--mut:#8c8c8c;--dim:#5c5c5c;--line:#222;--hover:#0f0f0f;
+  --paper:#fff;--ink:#16161a;--ink2:#5d5d66;--pline:#e4e4e7;--pcode:#f4f4f5;
+  --font:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+
+.page{display:grid;grid-template-columns:minmax(280px,38%) 1fr;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;padding:56px 48px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line)}
+aside h1{font-size:clamp(2.6rem,5.2vw,4.6rem);line-height:.98;letter-spacing:-.045em;font-weight:500;margin:0 0 28px;overflow-wrap:anywhere}
+aside p{color:var(--mut);max-width:30ch;margin:0;font-size:1.05rem}
+.me{display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.me a{color:var(--fg);text-decoration:none;width:max-content;border-bottom:1px solid var(--dim);padding-bottom:1px}
+.me a:hover{border-color:var(--fg)}
+.me small{color:var(--dim);font-size:.85rem;margin-top:14px}
+
+main{padding:56px 48px 80px}
+.head{display:flex;justify-content:space-between;align-items:baseline;color:var(--mut);font-size:.9rem;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr);gap:8px 40px;padding:30px 12px;margin:0 -12px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .2s}
+.row:hover,.row:focus-visible{background:var(--hover)}
+.row:focus-visible{outline-offset:-2px}
+.row h2{font-size:1.65rem;line-height:1.15;letter-spacing:-.025em;font-weight:500;margin:0}
+.badge{display:inline-block;vertical-align:middle;margin-left:10px;font-size:.78rem;font-weight:400;letter-spacing:0;color:var(--fg);border:1px solid var(--dim);border-radius:99px;padding:1px 10px;position:relative;top:-3px}
+.repo{color:var(--dim);font-size:.88rem;margin-top:6px}
+.sum{color:var(--mut);margin:0;min-height:3em;max-width:52ch}
+.sk{height:.85em;border-radius:3px;background:#1a1a1a;margin:.55em 0;animation:p 1.4s ease-in-out infinite}
+@keyframes p{50%{opacity:.4}}
+.acts{grid-column:2;display:flex;gap:22px;flex-wrap:wrap;margin-top:10px;font-size:.92rem}
+.acts a,.acts button{color:var(--fg);text-decoration:none;border:0;background:none;padding:0 0 1px;font:inherit;cursor:pointer;border-bottom:1px solid var(--dim)}
+.acts a:hover,.acts button:hover{border-color:var(--fg)}
+.acts .read{margin-left:auto;color:var(--mut)}
+
+/* panneau README */
+#veil{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .3s;z-index:20}
+#veil.on{opacity:1;pointer-events:auto}
+#panel{position:fixed;top:0;right:0;bottom:0;width:min(880px,100%);background:var(--paper);color:var(--ink);transform:translateX(100%);transition:transform .38s cubic-bezier(.2,.7,.2,1);z-index:21;display:flex;flex-direction:column;visibility:hidden}
+#panel.on{transform:none;visibility:visible}
+.ph{display:flex;align-items:center;gap:20px;padding:18px 36px;border-bottom:1px solid var(--pline);flex-wrap:wrap}
+.ph h3{margin:0;font-size:1.1rem;font-weight:600;letter-spacing:-.01em;margin-right:auto}
+.ph a,.ph button{color:var(--ink);font:inherit;font-size:.92rem;text-decoration:none;background:none;border:0;border-bottom:1px solid #b9b9c0;padding:0 0 1px;cursor:pointer}
+.ph a:hover,.ph button:hover{border-color:var(--ink)}
+.ph :focus-visible{outline-color:var(--ink)}
+#body{overflow:auto;padding:12px 36px 64px;flex:1;overscroll-behavior:contain}
+.md{color:var(--ink);font-size:1rem;line-height:1.7;overflow-wrap:anywhere}
+.md h1,.md h2,.md h3{letter-spacing:-.02em;line-height:1.25;font-weight:600}
+.md h1{font-size:2rem;margin:1.2em 0 .5em}
+.md h2{font-size:1.4rem;margin:1.8em 0 .6em;padding-bottom:.35em;border-bottom:1px solid var(--pline)}
+.md h3{font-size:1.1rem;margin:1.5em 0 .5em}
+.md a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:#a1a1aa}
+.md img{max-width:100%;height:auto;border-radius:6px}
+.md pre{background:var(--pcode);border:1px solid var(--pline);padding:16px;border-radius:6px;overflow:auto;font-size:.88rem;line-height:1.55}
+.md code{background:var(--pcode);padding:.12em .4em;border-radius:4px;font-size:.88em}
+.md pre code{padding:0;background:none}
+.md table{border-collapse:collapse;display:block;overflow:auto;max-width:100%}
+.md th,.md td{border:1px solid var(--pline);padding:8px 14px;text-align:left}
+.md th{background:var(--pcode)}
+.md blockquote{margin:1.2em 0;padding:.1em 1.2em;border-left:3px solid var(--ink);color:var(--ink2)}
+.md hr{border:0;border-top:1px solid var(--pline);margin:2em 0}
+.md .anchor{display:none}
+.md [align=center]{text-align:center}
+.msg{color:var(--ink2);padding:56px 0}
+
+@media (max-width:860px){
+  .page{display:block}
+  aside{position:static;height:auto;padding:40px 24px 32px;border:0;gap:40px}
+  main{padding:0 24px 64px}
+  .row{grid-template-columns:1fr;padding:26px 0;margin:0}
+  .acts{grid-column:1}
+  .ph,#body{padding-left:22px;padding-right:22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<div class="page">
+  <aside>
+    <div>
+      <h1 id="name"></h1>
+      <p>Les projets sur lesquels j'ai le plus travaillé, en open source.</p>
+    </div>
+    <div class="me">
+      <a id="gh" target="_blank" rel="noopener">GitHub</a>
+      <small id="copy"></small>
+    </div>
+  </aside>
+  <main>
+    <div class="head"><span>Projets sélectionnés</span><span id="count"></span></div>
+    <div id="list"></div>
+  </main>
+</div>
+
+<div id="veil"></div>
+<section id="panel" role="dialog" aria-modal="true" aria-labelledby="pt" aria-hidden="true">
+  <div class="ph"><h3 id="pt"></h3><span id="pl" style="display:contents"></span><button id="x">Fermer</button></div>
+  <div id="body" class="md"></div>
+</section>
+
+<script>
+/* ====== À PERSONNALISER ====== */
+const OWNER = "chpalitom09-bot";
+const NAME  = "chpalitom09";   /* ← mets ton prénom et nom ici */
+const PROJECTS = [
+  { repo:"chpalitom09-bot/ChromeOptimizer", title:"ChromeOptimizer",
+    pages:"https://chpalitom09-bot.github.io/ChromeOptimizer/",
+    fallback:"Un outil pour optimiser Google Chrome." },
+  { repo:"WikimindAI/Wikimind", title:"Wikimind AI",
+    fallback:"Un projet d'intelligence artificielle autour de la connaissance." },
+  { repo:"chpalitom09-bot/TomatoList", title:"TomatoList",
+    fallback:"Une liste de tâches construite autour de la méthode Pomodoro." },
+  { repo:"chpalitom09-bot/Open-food-calories", title:"OpenFoodCalories",
+    fallback:"Un outil pour consulter les calories des aliments." },
+  { repo:"WikimindAI/LocalLLM", title:"LocalLLM",
+    fallback:"Faire tourner des modèles de langage en local." },
+  { repo:"chpalitom09-bot/ColorWeb", title:"ColorWeb",
+    fallback:"Un projet web autour des couleurs." },
+  { repo:"pollinations/pollinations", title:"Pollinations", badge:"Contributeur",
+    fallback:"Plateforme open source d'IA générative, accessible à tous." }
+];
+/* ============================= */
+
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+$("#name").textContent = NAME;
+$("#gh").href = "https://github.com/" + OWNER;
+$("#copy").textContent = "© " + new Date().getFullYear() + " " + NAME;
+$("#count").textContent = PROJECTS.length + " projets";
+
+const cache = {
+  get(k){ try{ return JSON.parse(sessionStorage.getItem(k)); }catch(e){ return null; } },
+  set(k,v){ try{ sessionStorage.setItem(k, JSON.stringify(v)); }catch(e){} }
+};
+async function gh(url, accept){
+  const r = await fetch(url, { headers:{ Accept: accept || "application/vnd.github+json" } });
+  if(!r.ok) throw new Error(r.status);
+  return accept ? r.text() : r.json();
+}
+async function loadData(p){
+  const k = "gh:" + p.repo, c = cache.get(k);
+  if(c) return c;
+  const [info, html] = await Promise.allSettled([
+    gh("https://api.github.com/repos/" + p.repo),
+    gh("https://api.github.com/repos/" + p.repo + "/readme", "application/vnd.github.html+json")
+  ]);
+  const d = { info: info.status === "fulfilled" ? info.value : null,
+              html: html.status === "fulfilled" ? html.value : null };
+  if(d.info || d.html) cache.set(k, d);
+  return d;
+}
+function summarize(p, d){
+  if(d.info && d.info.description) return d.info.description;
+  if(d.html){
+    const t = document.createElement("div");
+    t.innerHTML = DOMPurify.sanitize(d.html);
+    for(const el of t.querySelectorAll("p, li")){
+      if(el.querySelector("img") && el.textContent.trim().length < 20) continue;
+      const s = el.textContent.replace(/\s+/g, " ").trim();
+      if(s.length > 25) return s.length > 170 ? s.slice(0,167) + "…" : s;
+    }
+  }
+  return p.fallback;
+}
+
+const list = $("#list");
+PROJECTS.forEach(p => {
+  const code = "https://github.com/" + p.repo;
+  const row = document.createElement("article");
+  row.className = "row"; row.tabIndex = 0;
+  row.innerHTML =
+    '<div><h2>' + esc(p.title) + (p.badge ? '<span class="badge">' + esc(p.badge) + '</span>' : '') + '</h2>' +
+    '<div class="repo">' + esc(p.repo) + '</div></div>' +
+    '<p class="sum"><span class="sk"></span><span class="sk" style="width:65%;display:block"></span></p>' +
+    '<div class="acts">' +
+      (p.pages ? '<a target="_blank" rel="noopener" href="' + p.pages + '">GitHub Pages</a>' : '') +
+      '<a target="_blank" rel="noopener" href="' + code + '">Voir le code</a>' +
+      '<button class="read" tabindex="-1">Lire le README</button></div>';
+  $(".sk", row).style.display = "block";
+  row.querySelectorAll("a").forEach(a => a.addEventListener("click", e => e.stopPropagation()));
+  const open = () => openPanel(p, code);
+  row.addEventListener("click", open);
+  row.addEventListener("keydown", e => { if(e.key === "Enter" && e.target === row) open(); });
+  list.appendChild(row);
+
+  loadData(p).then(d => {
+    $(".sum", row).textContent = summarize(p, d);
+    const h = d.info && d.info.homepage;
+    if(h && !p.pages && /^https?:\/\//.test(h)){
+      const a = document.createElement("a");
+      a.target = "_blank"; a.rel = "noopener"; a.href = h; a.textContent = "Site web";
+      a.addEventListener("click", e => e.stopPropagation());
+      $(".acts", row).insertBefore(a, $(".acts a", row));
+    }
+  });
+});
+
+const panel = $("#panel"), veil = $("#veil"), body = $("#body");
+let lastFocus = null;
+async function openPanel(p, code){
+  lastFocus = document.activeElement;
+  $("#pt").textContent = p.title;
+  $("#pl").innerHTML =
+    (p.pages ? '<a target="_blank" rel="noopener" href="' + p.pages + '">GitHub Pages</a>' : '') +
+    '<a target="_blank" rel="noopener" href="' + code + '">Voir le code</a>';
+  body.innerHTML = '<div class="msg">Chargement du README…</div>';
+  body.scrollTop = 0;
+  panel.classList.add("on"); veil.classList.add("on");
+  panel.setAttribute("aria-hidden","false");
+  document.body.style.overflow = "hidden";
+  $("#x").focus({preventScroll:true});
+  const d = await loadData(p);
+  if(!d.html){
+    body.innerHTML = '<div class="msg">Le README n\'a pas pu être chargé (limite de requêtes GitHub atteinte, ou dépôt introuvable). <a target="_blank" rel="noopener" href="' + code + '#readme">Le lire sur GitHub</a>.</div>';
+    return;
+  }
+  body.innerHTML = DOMPurify.sanitize(d.html);
+  body.querySelectorAll("a").forEach(a => {
+    const h = a.getAttribute("href") || "";
+    if(h.startsWith("#")) a.addEventListener("click", e => e.preventDefault());
+    else { a.target = "_blank"; a.rel = "noopener"; }
+  });
+  body.querySelectorAll("img").forEach(im => im.loading = "lazy");
+  if(!body.querySelector("img") && body.textContent.replace(/\s+/g," ").trim().toLowerCase() === p.title.toLowerCase()){
+    body.insertAdjacentHTML("beforeend", '<div class="msg">Ce README ne contient pas encore de description.</div>');
+  }
+}
+function closePanel(){
+  panel.classList.remove("on"); veil.classList.remove("on");
+  panel.setAttribute("aria-hidden","true");
+  document.body.style.overflow = "";
+  if(lastFocus) lastFocus.focus({preventScroll:true});
+}
+$("#x").onclick = closePanel;
+veil.onclick = closePanel;
+document.addEventListener("keydown", e => { if(e.key === "Escape" && panel.classList.contains("on")) closePanel(); });
+</script>
+</body>
+</html>
