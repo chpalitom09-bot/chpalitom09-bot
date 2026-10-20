@@ -1,0 +1,145 @@
+{
+  "v": 3,
+  "shortcuts": [
+    {
+      "id": "d1",
+      "title": "YouTube",
+      "url": "https://www.youtube.com",
+      "x": 30,
+      "y": 58
+    },
+    {
+      "id": "d2",
+      "title": "GitHub",
+      "url": "https://github.com",
+      "x": 42,
+      "y": 58
+    },
+    {
+      "id": "d3",
+      "title": "Gmail",
+      "url": "https://mail.google.com",
+      "x": 54,
+      "y": 58
+    },
+    {
+      "id": "d4",
+      "title": "Kaggle",
+      "url": "https://www.kaggle.com",
+      "x": 66,
+      "y": 58
+    },
+    {
+      "id": "t1792321488628_0",
+      "title": "Nouvelle conversation",
+      "url": "https://claude.ai/new",
+      "x": 20,
+      "y": 58
+    },
+    {
+      "id": "t1792321488628_1",
+      "title": "Informations générales",
+      "url": "https://celene.insa-cvl.fr/enrol/index.php?id=261",
+      "x": 80,
+      "y": 58
+    },
+    {
+      "id": "t1792321488628_2",
+      "title": "‎Google Gemini",
+      "url": "https://gemini.google.com/",
+      "x": 20,
+      "y": 73
+    },
+    {
+      "id": "t1792321488629_3",
+      "title": "insa Connexion",
+      "url": "https://cas.insa-cvl.fr/cas/login?service=https:%2F%2Fedt.insa-cvl.fr%2F%3Fp=daCAS",
+      "x": 29.864096641540527,
+      "y": 73.72602593408872
+    },
+    {
+      "id": "t1792321488629_4",
+      "title": "ChatGPT",
+      "url": "https://chatgpt.com/",
+      "x": 42.28108723958333,
+      "y": 73.17808072860926
+    },
+    {
+      "id": "t1792321488629_5",
+      "title": "insa Connexion",
+      "url": "https://hyperplanning.insa-cvl.fr/",
+      "x": 54.33268149693807,
+      "y": 73.39726382738924
+    },
+    {
+      "id": "t1792321488629_6",
+      "title": "Family Games",
+      "url": "https://chpalitom09-bot.github.io/familygames/#NMUP",
+      "x": 65.65593083699545,
+      "y": 73.72602593408872
+    }
+  ],
+  "widgets": [
+    {
+      "id": "w_clock",
+      "type": "clock",
+      "x": 50,
+      "y": 18.005135941178832,
+      "cfg": {
+        "style": "digital",
+        "font": "mono",
+        "size": 96,
+        "asize": 180,
+        "weight": 800,
+        "h24": true,
+        "seconds": true,
+        "blink": true,
+        "showDate": true,
+        "dateFmt": "long",
+        "color": "#ffffff",
+        "card": false,
+        "dial": "ticks",
+        "secHand": true
+      }
+    },
+    {
+      "id": "w_search",
+      "type": "search",
+      "x": 50,
+      "y": 37,
+      "cfg": {
+        "width": 540
+      }
+    },
+    {
+      "id": "wmvcq1nfizb1",
+      "type": "weather",
+      "x": 16.249999403953552,
+      "y": 18.698630136986303,
+      "cfg": {
+        "city": {
+          "lat": 47.59432,
+          "lon": 1.32912,
+          "name": "Blois",
+          "region": "Centre-Val de Loire, France"
+        },
+        "unit": "c",
+        "size": "m",
+        "bg": "glass"
+      }
+    }
+  ],
+  "settings": {
+    "blur": 0,
+    "dim": 0,
+    "size": 64,
+    "labels": true,
+    "bgUrl": "",
+    "anim": true,
+    "particles": false,
+    "parallax": false,
+    "accent": "#0a84ff",
+    "gblur": 18,
+    "galpha": 50
+  }
+}
