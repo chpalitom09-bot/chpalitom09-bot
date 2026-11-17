@@ -216,8 +216,8 @@ async function ghGet(url, accept, text){
   return text ? r.text() : r.json();
 }
 async function rawReadme(repo, branch){
-  const bs = [...new Set([branch, "main", "master"].filter(Boolean))];
-  for(const b of bs) for(const n of ["README.md","readme.md","Readme.md","README.markdown"]){
+  const bs = [...new Set([branch, "main"].filter(Boolean))];
+  for(const b of bs) for(const n of ["README.md","readme.md"]){
     try{
       const r = await fetch("https://raw.githubusercontent.com/" + repo + "/" + b + "/" + n);
       if(r.ok) return { md: await r.text(), branch: b };
@@ -226,7 +226,7 @@ async function rawReadme(repo, branch){
   return null;
 }
 async function loadData(p){
-  const k = "gh2:" + p.repo, c = cache.get(k);
+  const k = "gh3:" + p.repo, c = cache.get(k);
   if(c) return c;
   const api = "https://api.github.com/repos/" + p.repo;
   const [i, h] = await Promise.allSettled([
@@ -235,13 +235,14 @@ async function loadData(p){
   ]);
   const info = i.status === "fulfilled" ? i.value : null;
   let html = h.status === "fulfilled" ? h.value : null;
+  const noreadme = h.status === "rejected" && h.reason && h.reason.message === "404";
   let branch = info && info.default_branch || null;
-  if(!html){
+  if(!html && !noreadme){
     const raw = await rawReadme(p.repo, branch);
     if(raw && window.marked){ html = marked.parse(raw.md); branch = raw.branch; }
   }
-  const d = { info: info ? { description: info.description, homepage: info.homepage } : null, html, branch: branch || "main" };
-  if(d.info || d.html) cache.set(k, d);
+  const d = { info: info ? { description: info.description, homepage: info.homepage } : null, html, noreadme, branch: branch || "main" };
+  if(d.info || d.html || noreadme) cache.set(k, d);
   return d;
 }
 const SAFE = { ADD_TAGS:["picture","source","video"], ADD_ATTR:["srcset","media","controls","loop","muted","autoplay","playsinline","align"] };
@@ -293,15 +294,47 @@ function summarize(p, d){
 }
 
 function logoHTML(p){
-  if(!p.logo) return '<div class="logo ltr">' + esc(p.title[0]) + '</div>';
+  if(!p.logo) return '<div class="logo ltr" data-r="' + esc(p.repo) + '">' + esc(p.title[0]) + '</div>';
   return '<img class="logo' + (p.fit === "contain" ? ' contain' : '') + '" src="' + p.logo + '" alt="" width="56" height="56" decoding="async"' +
     (p.pos ? ' style="object-position:' + p.pos + '"' : '') + '>';
 }
 function armLogos(root, p){
   root.querySelectorAll("img.logo").forEach(im => im.addEventListener("error", () => {
     const d = document.createElement("div");
-    d.className = "logo ltr"; d.textContent = p.title[0]; im.replaceWith(d);
+    d.className = "logo ltr"; d.dataset.r = p.repo; d.textContent = p.title[0]; im.replaceWith(d);
+    autoLogo(p);
   }, {once:true}));
+}
+async function autoLogo(p){
+  if(p.tried) return;
+  p.tried = true;
+  const k = "logo:" + p.repo;
+  let u = cache.get(k);
+  if(u === null){
+    u = "";
+    try{
+      const d = await loadData(p);
+      const t = await ghGet("https://api.github.com/repos/" + p.repo + "/git/trees/" + (d.branch || "HEAD") + "?recursive=1", "application/vnd.github+json");
+      let best = 0;
+      (t.tree || []).forEach(f => {
+        if(f.type !== "blob" || f.size > 700000 || /node_modules|screenshot|preview/i.test(f.path) || !/\.(svg|png|webp|jpe?g|ico)$/i.test(f.path)) return;
+        const n = f.path.split("/").pop().toLowerCase();
+        let sc = /logo/.test(n) ? 5 : /icon/.test(n) ? 4 : /favicon/.test(n) ? 3 : /brand|mark/.test(n) ? 2 : 0;
+        if(!sc) return;
+        sc = sc * 10 - f.path.split("/").length + (/\.svg$/.test(n) ? 3 : 0);
+        if(sc > best){ best = sc; u = "https://raw.githubusercontent.com/" + p.repo + "/" + d.branch + "/" + encodeURI(f.path); }
+      });
+    }catch(e){}
+    cache.set(k, u);
+  }
+  if(!u) return;
+  p.logo = u;
+  document.querySelectorAll('.logo.ltr[data-r="' + CSS.escape(p.repo) + '"]').forEach(el => {
+    const t = document.createElement("template");
+    t.innerHTML = logoHTML(p);
+    armLogos(t.content, p);
+    el.replaceWith(t.content.firstChild);
+  });
 }
 function linksHTML(p){
   return (p.store ? '<a target="_blank" rel="noopener" href="' + p.store + '">Chrome Web Store</a>' : '') +
@@ -335,6 +368,7 @@ PROJECTS.forEach((p, idx) => {
 
   loadData(p).then(d => {
     $(".sum", row).textContent = summarize(p, d);
+    if(!p.logo) autoLogo(p);
     const h = d.info && d.info.homepage;
     if(h && !p.pages && /^https?:\/\//.test(h)){
       const a = document.createElement("a");
@@ -361,6 +395,10 @@ async function openPanel(p, code){
   document.body.style.overflow = "hidden";
   $("#x").focus({preventScroll:true});
   const d = await loadData(p);
+  if(!d.html && d.noreadme){
+    body.innerHTML = '<div class="msg">Ce dépôt n\'a pas encore de README. <a target="_blank" rel="noopener" href="' + code + '">Voir le code sur GitHub</a>.</div>';
+    return;
+  }
   if(!d.html){
     body.innerHTML = '<div class="msg">Le README n\'a pas pu être chargé (limite de requêtes GitHub atteinte, ou dépôt introuvable). <a target="_blank" rel="noopener" href="' + code + '#readme">Le lire sur GitHub</a>.</div>';
     return;
