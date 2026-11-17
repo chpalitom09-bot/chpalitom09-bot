@@ -3,96 +3,383 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>chpalitom09 | Créations et projets</title>
-<meta name="description" content="Développeur étudiant à l'INSA CVL. Plateformes web, extensions Chrome, outils open source.">
-<meta name="theme-color" content="#050505">
+<title>Projets · chpalitom09</title>
+<meta name="description" content="Mes principaux projets open source.">
+<meta name="color-scheme" content="dark">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<script src="https://cdn.jsdelivr.net/npm/lucide@0.469.0/dist/umd/lucide.min.js" defer></script>
-<script src="script.js" defer></script>
+<link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/dompurify/3.1.6/purify.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/marked/12.0.2/marked.min.js"></script>
+<style>
+:root{
+  --bg:#000;--fg:#f5f5f5;--mut:#8c8c8c;--dim:#5c5c5c;--line:#222;--hover:#0f0f0f;
+  --paper:#fff;--ink:#16161a;--ink2:#5d5d66;--pline:#e4e4e7;--pcode:#f4f4f5;
+  --font:"Geist",ui-sans-serif,system-ui,-apple-system,"Segoe UI",Helvetica,Arial,sans-serif;
+}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--fg);font:400 16px/1.55 var(--font);-webkit-font-smoothing:antialiased}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--fg);outline-offset:3px}
+
+.page{display:grid;grid-template-columns:minmax(280px,38%) 1fr;min-height:100vh}
+aside{position:sticky;top:0;height:100vh;padding:56px 48px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--line)}
+aside h1{font-size:clamp(2.6rem,5.2vw,4.6rem);line-height:.98;letter-spacing:-.045em;font-weight:500;margin:0 0 28px;overflow-wrap:anywhere}
+aside p{color:var(--mut);max-width:30ch;margin:0;font-size:1.05rem}
+.me{display:flex;flex-direction:column;gap:6px;font-size:.95rem}
+.me a{color:var(--fg);text-decoration:none;width:max-content;border-bottom:1px solid var(--dim);padding-bottom:1px}
+.me a:hover{border-color:var(--fg)}
+.me small{color:var(--dim);font-size:.85rem;margin-top:14px}
+
+main{padding:56px 48px 80px}
+.head{display:flex;justify-content:space-between;align-items:baseline;color:var(--mut);font-size:.9rem;padding-bottom:16px;border-bottom:1px solid var(--line)}
+.row{display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1.4fr);gap:8px 40px;padding:30px 12px;margin:0 -12px;border-bottom:1px solid var(--line);cursor:pointer;transition:background .2s}
+.row:hover,.row:focus-visible{background:var(--hover)}
+.row:focus-visible{outline-offset:-2px}
+.row h2{font-size:1.65rem;line-height:1.15;letter-spacing:-.025em;font-weight:500;margin:0}
+.badge{display:inline-block;vertical-align:middle;margin-left:10px;font-size:.78rem;font-weight:400;letter-spacing:0;color:var(--fg);border:1px solid var(--dim);border-radius:99px;padding:1px 10px;position:relative;top:-3px}
+.repo{color:var(--dim);font-size:.88rem;margin-top:6px}
+.sum{color:var(--mut);margin:0;min-height:3em;max-width:52ch}
+.sk{height:.85em;border-radius:3px;background:#1a1a1a;margin:.55em 0;animation:p 1.4s ease-in-out infinite}
+@keyframes p{50%{opacity:.4}}
+.acts{grid-column:2;display:flex;gap:22px;flex-wrap:wrap;margin-top:10px;font-size:.92rem}
+.acts a,.acts button{color:var(--fg);text-decoration:none;border:0;background:none;padding:0 0 1px;font:inherit;cursor:pointer;border-bottom:1px solid var(--dim)}
+.acts a:hover,.acts button:hover{border-color:var(--fg)}
+.acts .read{margin-left:auto;color:var(--mut)}
+
+
+#veil{position:fixed;inset:0;background:rgba(0,0,0,.6);opacity:0;pointer-events:none;transition:opacity .3s;z-index:20}
+#veil.on{opacity:1;pointer-events:auto}
+#panel{position:fixed;top:0;right:0;bottom:0;width:min(880px,100%);background:var(--paper);color:var(--ink);transform:translateX(100%);transition:transform .38s cubic-bezier(.2,.7,.2,1);z-index:21;display:flex;flex-direction:column;visibility:hidden}
+#panel.on{transform:none;visibility:visible}
+.ph{display:flex;align-items:center;gap:20px;padding:18px 36px;border-bottom:1px solid var(--pline);flex-wrap:wrap}
+.ph h3{display:flex;align-items:center;margin:0;font-size:1.1rem;font-weight:600;letter-spacing:-.01em;margin-right:auto}
+.ph a,.ph button{color:var(--ink);font:inherit;font-size:.92rem;text-decoration:none;background:none;border:0;border-bottom:1px solid #b9b9c0;padding:0 0 1px;cursor:pointer}
+.ph a:hover,.ph button:hover{border-color:var(--ink)}
+.ph :focus-visible{outline-color:var(--ink)}
+#body{overflow:auto;padding:12px 36px 64px;flex:1;overscroll-behavior:contain}
+.md{color:var(--ink);font-size:1rem;line-height:1.7;overflow-wrap:anywhere}
+.md h1,.md h2,.md h3{letter-spacing:-.02em;line-height:1.25;font-weight:600}
+.md h1{font-size:2rem;margin:1.2em 0 .5em}
+.md h2{font-size:1.4rem;margin:1.8em 0 .6em;padding-bottom:.35em;border-bottom:1px solid var(--pline)}
+.md h3{font-size:1.1rem;margin:1.5em 0 .5em}
+.md a{color:var(--ink);text-decoration:underline;text-underline-offset:3px;text-decoration-color:#a1a1aa}
+.md img,.md picture,.md video,.md svg{max-width:100%;height:auto;border-radius:6px}
+.md img[src$=".svg"],.md img[src*=".svg?"]{border-radius:0}
+.md p[align=center] img,.md div[align=center] img{display:inline-block;vertical-align:middle}
+.md pre{background:var(--pcode);border:1px solid var(--pline);padding:16px;border-radius:6px;overflow:auto;font-size:.88rem;line-height:1.55}
+.md code{background:var(--pcode);padding:.12em .4em;border-radius:4px;font-size:.88em}
+.md pre code{padding:0;background:none}
+.md table{border-collapse:collapse;display:block;overflow:auto;max-width:100%}
+.md th,.md td{border:1px solid var(--pline);padding:8px 14px;text-align:left}
+.md th{background:var(--pcode)}
+.md blockquote{margin:1.2em 0;padding:.1em 1.2em;border-left:3px solid var(--ink);color:var(--ink2)}
+.md hr{border:0;border-top:1px solid var(--pline);margin:2em 0}
+.md .anchor{display:none}
+.md [align=center]{text-align:center}
+.msg{color:var(--ink2);padding:56px 0}
+
+
+.id{display:flex;gap:20px;align-items:flex-start}
+.logo{width:56px;height:56px;flex:none;border-radius:13px;object-fit:cover;background:#0d0d0d;border:1px solid var(--line);display:block;transition:transform .45s cubic-bezier(.2,.8,.2,1),border-color .3s}
+.logo.contain{object-fit:contain;padding:11px}
+.logo.ltr{display:grid;place-items:center;font-size:1.4rem;font-weight:500;color:var(--mut)}
+.row:hover .logo{transform:scale(1.08) rotate(-3deg);border-color:var(--dim)}
+.ph .logo{width:30px;height:30px;border-radius:8px}
+.ph .logo.contain{padding:5px}
+.ph .logo.ltr{font-size:.9rem}
+.ph .logo{border-color:var(--pline);background:#111}
+
+@keyframes rise{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:none}}
+@keyframes mask{from{transform:translateY(105%)}to{transform:none}}
+@keyframes grow{from{transform:scaleX(0)}to{transform:scaleX(1)}}
+aside h1{overflow:hidden;padding-bottom:.08em}
+aside h1 span span{display:inline-block;animation:mask 1s cubic-bezier(.2,.8,.2,1) both}
+aside p{animation:rise .9s .35s cubic-bezier(.2,.8,.2,1) both}
+.me{animation:rise .9s .5s cubic-bezier(.2,.8,.2,1) both}
+.head{position:relative;border-bottom:0;animation:rise .8s .2s both}
+.head::after{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);transform-origin:left;animation:grow 1.2s .3s cubic-bezier(.2,.8,.2,1) both}
+.row{position:relative;animation:rise .85s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(.45s + var(--i)*.09s);overflow:hidden}
+.row::before{content:"";position:absolute;inset:0;background:radial-gradient(420px circle at var(--mx,50%) var(--my,50%),rgba(255,255,255,.07),transparent 60%);opacity:0;transition:opacity .35s;pointer-events:none}
+.row:hover::before{opacity:1}
+.row>*{position:relative}
+.row h2{transition:transform .4s cubic-bezier(.2,.8,.2,1)}
+.row:hover h2,.row:focus-visible h2{transform:translateX(14px)}
+.row .repo{transition:transform .4s .03s cubic-bezier(.2,.8,.2,1),color .3s}
+.row:hover .repo{transform:translateX(14px);color:var(--mut)}
+.row .read{transition:transform .35s,color .3s}
+.row:hover .read{color:var(--fg);transform:translateX(-6px)}
+.acts a,.acts button{border-bottom-color:transparent;background:linear-gradient(currentColor,currentColor) left bottom/100% 1px no-repeat;transition:background-size .35s cubic-bezier(.2,.8,.2,1),color .3s}
+.acts a,.acts button{background-image:linear-gradient(var(--dim),var(--dim)),linear-gradient(var(--fg),var(--fg));background-size:100% 1px,0 1px;background-position:left bottom;background-repeat:no-repeat}
+.acts a:hover,.acts button:hover{background-size:100% 1px,100% 1px;border-color:transparent}
+.badge{transition:background .3s,color .3s}
+.row:hover .badge{background:var(--fg);color:#000}
+.sum{transition:color .3s}
+.row:hover .sum{color:#cfcfcf}
+.reveal{animation:rise .6s cubic-bezier(.2,.8,.2,1) both}
+.md>*{animation:rise .6s cubic-bezier(.2,.8,.2,1) both;animation-delay:calc(var(--k,0)*.04s)}
+@media (max-width:860px){
+  .page{display:block}
+  aside{position:static;height:auto;padding:40px 24px 32px;border:0;gap:40px}
+  main{padding:0 24px 64px}
+  .row{grid-template-columns:1fr;padding:26px 0;margin:0}
+  .acts{grid-column:1}
+  .ph,#body{padding-left:22px;padding-right:22px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
 </head>
 <body>
-<div class="bar" id="bar"></div>
-<div class="glow" id="glow"></div>
-<header class="nav" id="nav">
-  <a class="logo" href="#top"><i data-lucide="terminal-square"></i><span>chpalitom09</span></a>
-  <nav>
-    <a href="#projets">Projets</a>
-    <a href="#contrib">Contribution</a>
-    <a href="#stack">Stack</a>
-    <a href="#contact">Contact</a>
-  </nav>
-  <a class="btn small" href="https://github.com/chpalitom09-bot" target="_blank" rel="noopener"><i data-lucide="github"></i>GitHub</a>
-</header>
+<div class="page">
+  <aside>
+    <div>
+      <h1 id="name"></h1>
+      <p>Les projets sur lesquels j'ai le plus travaillé, en open source.</p>
+    </div>
+    <div class="me">
+      <a id="gh" target="_blank" rel="noopener">GitHub</a>
+      <small id="copy"></small>
+    </div>
+  </aside>
+  <main>
+    <div class="head"><span>Projets sélectionnés</span><span id="count"></span></div>
+    <div id="list"></div>
+  </main>
+</div>
 
-<main id="top">
-  <section class="hero">
-    <div class="grid-bg"></div>
-    <p class="tag reveal"><span class="dot"></span>Disponible pour de nouveaux projets</p>
-    <h1 class="reveal d1">Je construis des<br><span class="rot" id="rot">plateformes web</span><span class="caret"></span></h1>
-    <p class="lead reveal d2">Étudiant à l'INSA Centre Val de Loire, je conçois et maintiens seul des outils complets : interface, base de données, déploiement. Open source, rapides, utiles.</p>
-    <div class="cta reveal d3">
-      <a class="btn primary" href="#projets"><i data-lucide="layout-grid"></i>Voir les projets</a>
-      <a class="btn" href="https://chromewebstore.google.com/detail/chromeoptimizer-gestionna/naefoklnpmljhohogkhabjdcdhlkcdog" target="_blank" rel="noopener"><i data-lucide="chrome"></i>Extension Chrome</a>
-    </div>
-    <div class="stats reveal d4">
-      <div><b data-count="8">0</b><span>projets présentés</span></div>
-      <div><b data-count="3">0</b><span>extensions Chrome</span></div>
-      <div><b data-count="1">0</b><span>contribution majeure</span></div>
-      <div><b data-count="100" data-suffix="%">0</b><span>open source</span></div>
-    </div>
-  </section>
+<div id="veil"></div>
+<section id="panel" role="dialog" aria-modal="true" aria-labelledby="pt" aria-hidden="true">
+  <div class="ph"><h3 id="pt"></h3><span id="pl" style="display:contents"></span><button id="x">Fermer</button></div>
+  <div id="body" class="md"></div>
+</section>
 
-  <section id="projets" class="sec">
-    <div class="sec-head reveal">
-      <p class="kicker"><i data-lucide="folder-git-2"></i>Réalisations</p>
-      <h2>Mes projets</h2>
-    </div>
-    <div class="filters reveal" id="filters">
-      <button class="on" data-f="all">Tout</button>
-      <button data-f="web"><i data-lucide="globe"></i>Web</button>
-      <button data-f="ext"><i data-lucide="puzzle"></i>Extensions</button>
-      <button data-f="ia"><i data-lucide="cpu"></i>Modèles et API</button>
-    </div>
-    <div class="cards" id="cards"></div>
-  </section>
+<script>
 
-  <section id="contrib" class="sec">
-    <div class="sec-head reveal">
-      <p class="kicker"><i data-lucide="git-pull-request"></i>Open source</p>
-      <h2>Contribution</h2>
-    </div>
-    <a class="contrib reveal" href="https://github.com/pollinations/pollinations" target="_blank" rel="noopener">
-      <div class="ci"><i data-lucide="git-merge"></i></div>
-      <div>
-        <h3>pollinations/pollinations</h3>
-        <p>Contributeur au projet open source de génération d'images et de texte accessible par API, intégré dans mes propres plateformes.</p>
-      </div>
-      <i data-lucide="arrow-up-right" class="go"></i>
-    </a>
-  </section>
+const OWNER = "chpalitom09-bot";
+const NAME  = "chpalitom09";
+const PROJECTS = [
+  { repo:"chpalitom09-bot/ChromeOptimizer", title:"ChromeOptimizer", store:"https://chromewebstore.google.com/detail/chromeoptimizer-gestionna/naefoklnpmljhohogkhabjdcdhlkcdog",
+    pages:"https://chpalitom09-bot.github.io/ChromeOptimizer/",
+    logo:"https://raw.githubusercontent.com/chpalitom09-bot/ChromeOptimizer/main/icon128.png",
+    fallback:"Un outil pour optimiser Google Chrome." },
+  { repo:"WikimindAI/Wikimind", title:"Wikimind AI", pages:"https://wikimindai.github.io/Wikimind/",
+    logo:"https://raw.githubusercontent.com/WikimindAI/Wikimind/main/wikimindi.png",
+    fallback:"Un projet d'intelligence artificielle autour de la connaissance." },
+  { repo:"chpalitom09-bot/TomatoList", title:"TomatoList",
+    pages:"https://chpalitom09-bot.github.io/TomatoList/",
+    logo:"https://raw.githubusercontent.com/chpalitom09-bot/TomatoList/main/icon.svg",
+    fallback:"Une liste de tâches construite autour de la méthode Pomodoro." },
+  { repo:"chpalitom09-bot/Open-food-calories", title:"OpenFoodCalories", pages:"https://chpalitom09-bot.github.io/Open-food-calories/",
+    logo:"data:image/jpeg;base64,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",
+    fallback:"Un outil pour consulter les calories des aliments." },
+  { repo:"WikimindAI/LocalLLM", title:"LocalLLM", pages:"https://wikimindai.github.io/LocalLLM/",
+    logo:"https://raw.githubusercontent.com/WikimindAI/LocalLLM/main/assets/logo-dark.svg", pos:"left center",
+    fallback:"Faire tourner des modèles de langage en local." },
+  { repo:"chpalitom09-bot/pepinsdetomates", title:"Pépins de tomates",
+    pages:"https://chpalitom09-bot.github.io/pepinsdetomates/",
+    fallback:"Catalogue de variétés de tomates avec panier et commande." },
+  { repo:"WikimindAI/wikimind-food-API", title:"Wikimind Food API",
+    fallback:"API statique sans serveur sur la base CIQUAL des aliments français." },
+  { repo:"chpalitom09-bot/ColorWeb", title:"ColorWeb",
+    logo:"https://raw.githubusercontent.com/chpalitom09-bot/ColorWeb/main/icon-192.png",
+    fallback:"Un projet web autour des couleurs." },
+  { repo:"pollinations/pollinations", title:"Pollinations", badge:"Contributeur",
+    logo:"https://raw.githubusercontent.com/pollinations/pollinations/main/packages/ui/src/brand/mark-white.svg", fit:"contain",
+    fallback:"Plateforme open source d'IA générative, accessible à tous." }
+];
 
-  <section id="stack" class="sec">
-    <div class="sec-head reveal">
-      <p class="kicker"><i data-lucide="layers"></i>Outils</p>
-      <h2>Stack</h2>
-    </div>
-    <div class="marq reveal"><div class="track" id="track"></div></div>
-  </section>
 
-  <section id="contact" class="sec end">
-    <div class="cta-box reveal">
-      <h2>Un projet en tête ?</h2>
-      <p>Retrouvez tout mon code sur GitHub, ou testez directement mes outils.</p>
-      <div class="cta">
-        <a class="btn primary" href="https://github.com/chpalitom09-bot" target="_blank" rel="noopener"><i data-lucide="github"></i>chpalitom09-bot</a>
-        <a class="btn" href="https://github.com/WikimindAI" target="_blank" rel="noopener"><i data-lucide="building-2"></i>WikimindAI</a>
-      </div>
-    </div>
-  </section>
-</main>
-<footer><span>chpalitom09</span><span>INSA Centre Val de Loire, Blois</span></footer>
+const $ = (s, r=document) => r.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+(function(){
+  const h = $("#name");
+  NAME.split(" ").forEach((w,i) => {
+    const wrap = document.createElement("span");
+    wrap.style.cssText = "display:inline-block;overflow:hidden;padding-bottom:.1em;margin-right:.22em";
+    const sp = document.createElement("span");
+    sp.textContent = w; sp.style.animationDelay = (i*0.12) + "s";
+    wrap.appendChild(sp); h.appendChild(wrap);
+  });
+})();
+$("#gh").href = "https://github.com/" + OWNER;
+$("#copy").textContent = "© " + new Date().getFullYear() + " " + NAME;
+$("#count").textContent = PROJECTS.length + " projets";
+
+const cache = {
+  get(k){ try{ const o = JSON.parse(localStorage.getItem(k)); return o && Date.now() - o.t < 21600000 ? o.v : null; }catch(e){ return null; } },
+  set(k,v){ try{ localStorage.setItem(k, JSON.stringify({t:Date.now(), v})); }catch(e){} }
+};
+async function ghGet(url, accept, text){
+  const r = await fetch(url, { headers:{ Accept: accept } });
+  if(!r.ok) throw new Error(r.status);
+  return text ? r.text() : r.json();
+}
+async function rawReadme(repo, branch){
+  const bs = [...new Set([branch, "main", "master"].filter(Boolean))];
+  for(const b of bs) for(const n of ["README.md","readme.md","Readme.md","README.markdown"]){
+    try{
+      const r = await fetch("https://raw.githubusercontent.com/" + repo + "/" + b + "/" + n);
+      if(r.ok) return { md: await r.text(), branch: b };
+    }catch(e){}
+  }
+  return null;
+}
+async function loadData(p){
+  const k = "gh2:" + p.repo, c = cache.get(k);
+  if(c) return c;
+  const api = "https://api.github.com/repos/" + p.repo;
+  const [i, h] = await Promise.allSettled([
+    ghGet(api, "application/vnd.github+json"),
+    ghGet(api + "/readme", "application/vnd.github.html+json", true)
+  ]);
+  const info = i.status === "fulfilled" ? i.value : null;
+  let html = h.status === "fulfilled" ? h.value : null;
+  let branch = info && info.default_branch || null;
+  if(!html){
+    const raw = await rawReadme(p.repo, branch);
+    if(raw && window.marked){ html = marked.parse(raw.md); branch = raw.branch; }
+  }
+  const d = { info: info ? { description: info.description, homepage: info.homepage } : null, html, branch: branch || "main" };
+  if(d.info || d.html) cache.set(k, d);
+  return d;
+}
+const SAFE = { ADD_TAGS:["picture","source","video"], ADD_ATTR:["srcset","media","controls","loop","muted","autoplay","playsinline","align"] };
+const ABS = /^(?:[a-z][a-z0-9+.-]*:|\/\/|#)/i;
+function renderReadme(p, d){
+  const t = document.createElement("template");
+  t.innerHTML = DOMPurify.sanitize(d.html, SAFE);
+  const root = t.content;
+  const raw = "https://raw.githubusercontent.com/" + p.repo + "/" + d.branch + "/";
+  const blob = "https://github.com/" + p.repo + "/blob/" + d.branch + "/";
+  const fix = (v, base) => {
+    if(!v) return v;
+    const m = v.match(/^https:\/\/github\.com\/([^/]+\/[^/]+)\/(?:blob|raw)\/([^?#]+)(?:\?[^#]*)?(#.*)?$/);
+    if(m) return "https://raw.githubusercontent.com/" + m[1] + "/" + m[2];
+    if(ABS.test(v)) return v;
+    try{ return new URL(v.replace(/^\//, ""), base).href; }catch(e){ return v; }
+  };
+  root.querySelectorAll("img,source,video").forEach(el => {
+    if(el.hasAttribute("src")) el.setAttribute("src", fix(el.getAttribute("src"), raw));
+    if(el.hasAttribute("srcset")) el.setAttribute("srcset", el.getAttribute("srcset").split(",").map(x => {
+      const q = x.trim().split(/\s+/); q[0] = fix(q[0], raw); return q.join(" ");
+    }).join(", "));
+  });
+  root.querySelectorAll('source[media*="dark"], img[src*="gh-dark-mode-only"]').forEach(el => el.remove());
+  root.querySelectorAll("a[href]").forEach(a => {
+    const h = a.getAttribute("href");
+    if(h.startsWith("#")) { a.addEventListener("click", e => e.preventDefault()); return; }
+    a.setAttribute("href", fix(h, blob));
+    a.target = "_blank"; a.rel = "noopener";
+  });
+  root.querySelectorAll("img").forEach(im => {
+    im.loading = "lazy"; im.decoding = "async";
+    im.addEventListener("error", () => { im.style.display = "none"; }, {once:true});
+  });
+  return root;
+}
+function summarize(p, d){
+  if(d.info && d.info.description) return d.info.description;
+  if(d.html){
+    const t = document.createElement("template");
+    t.innerHTML = DOMPurify.sanitize(d.html, SAFE);
+    for(const el of t.content.querySelectorAll("p, li")){
+      if(el.querySelector("img") && el.textContent.trim().length < 20) continue;
+      const s = el.textContent.replace(/\s+/g, " ").trim();
+      if(s.length > 25) return s.length > 170 ? s.slice(0,167) + "…" : s;
+    }
+  }
+  return p.fallback;
+}
+
+function logoHTML(p){
+  if(!p.logo) return '<div class="logo ltr">' + esc(p.title[0]) + '</div>';
+  return '<img class="logo' + (p.fit === "contain" ? ' contain' : '') + '" src="' + p.logo + '" alt="" width="56" height="56" decoding="async"' +
+    (p.pos ? ' style="object-position:' + p.pos + '"' : '') + '>';
+}
+function armLogos(root, p){
+  root.querySelectorAll("img.logo").forEach(im => im.addEventListener("error", () => {
+    const d = document.createElement("div");
+    d.className = "logo ltr"; d.textContent = p.title[0]; im.replaceWith(d);
+  }, {once:true}));
+}
+function linksHTML(p){
+  return (p.store ? '<a target="_blank" rel="noopener" href="' + p.store + '">Chrome Web Store</a>' : '') +
+    (p.pages ? '<a target="_blank" rel="noopener" href="' + p.pages + '">GitHub Pages</a>' : '');
+}
+const list = $("#list");
+PROJECTS.forEach((p, idx) => {
+  const code = "https://github.com/" + p.repo;
+  const row = document.createElement("article");
+  row.className = "row"; row.tabIndex = 0; row.style.setProperty("--i", idx);
+  row.addEventListener("pointermove", e => {
+    const r = row.getBoundingClientRect();
+    row.style.setProperty("--mx", (e.clientX - r.left) + "px");
+    row.style.setProperty("--my", (e.clientY - r.top) + "px");
+  });
+  row.innerHTML =
+    '<div class="id">' + logoHTML(p) + '<div><h2>' + esc(p.title) + (p.badge ? '<span class="badge">' + esc(p.badge) + '</span>' : '') + '</h2>' +
+    '<div class="repo">' + esc(p.repo) + '</div></div></div>' +
+    '<p class="sum"><span class="sk"></span><span class="sk" style="width:65%;display:block"></span></p>' +
+    '<div class="acts">' +
+      linksHTML(p) +
+      '<a target="_blank" rel="noopener" href="' + code + '">Voir le code</a>' +
+      '<button class="read" tabindex="-1">Lire le README</button></div>';
+  $(".sk", row).style.display = "block";
+  row.querySelectorAll("a").forEach(a => a.addEventListener("click", e => e.stopPropagation()));
+  const open = () => openPanel(p, code);
+  row.addEventListener("click", open);
+  row.addEventListener("keydown", e => { if(e.key === "Enter" && e.target === row) open(); });
+  armLogos(row, p);
+  list.appendChild(row);
+
+  loadData(p).then(d => {
+    $(".sum", row).textContent = summarize(p, d);
+    const h = d.info && d.info.homepage;
+    if(h && !p.pages && /^https?:\/\//.test(h)){
+      const a = document.createElement("a");
+      a.target = "_blank"; a.rel = "noopener"; a.href = h; a.textContent = "Site web";
+      a.addEventListener("click", e => e.stopPropagation());
+      $(".acts", row).insertBefore(a, $(".acts a", row));
+    }
+  });
+});
+
+const panel = $("#panel"), veil = $("#veil"), body = $("#body");
+let lastFocus = null;
+async function openPanel(p, code){
+  lastFocus = document.activeElement;
+  $("#pt").innerHTML = logoHTML(p).replace(/width="56" height="56"/, 'width="30" height="30"') + ' <span style="vertical-align:middle;margin-left:10px">' + esc(p.title) + '</span>';
+  armLogos($("#pt"), p);
+  $("#pl").innerHTML =
+    linksHTML(p) +
+    '<a target="_blank" rel="noopener" href="' + code + '">Voir le code</a>';
+  body.innerHTML = '<div class="msg">Chargement du README…</div>';
+  body.scrollTop = 0;
+  panel.classList.add("on"); veil.classList.add("on");
+  panel.setAttribute("aria-hidden","false");
+  document.body.style.overflow = "hidden";
+  $("#x").focus({preventScroll:true});
+  const d = await loadData(p);
+  if(!d.html){
+    body.innerHTML = '<div class="msg">Le README n\'a pas pu être chargé (limite de requêtes GitHub atteinte, ou dépôt introuvable). <a target="_blank" rel="noopener" href="' + code + '#readme">Le lire sur GitHub</a>.</div>';
+    return;
+  }
+  body.replaceChildren(renderReadme(p, d));
+  [...body.children].slice(0,14).forEach((el,k) => el.style.setProperty("--k", k));
+  if(!body.querySelector("img") && body.textContent.replace(/\s+/g," ").trim().toLowerCase() === p.title.toLowerCase()){
+    body.insertAdjacentHTML("beforeend", '<div class="msg">Ce README ne contient pas encore de description.</div>');
+  }
+}
+function closePanel(){
+  panel.classList.remove("on"); veil.classList.remove("on");
+  panel.setAttribute("aria-hidden","true");
+  document.body.style.overflow = "";
+  if(lastFocus) lastFocus.focus({preventScroll:true});
+}
+$("#x").onclick = closePanel;
+veil.onclick = closePanel;
+document.addEventListener("keydown", e => { if(e.key === "Escape" && panel.classList.contains("on")) closePanel(); });
+</script>
 </body>
 </html>
