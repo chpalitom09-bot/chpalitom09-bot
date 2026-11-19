@@ -10,7 +10,7 @@
   <tr>
     <td align="center" width="180"><a href="https://github.com/WikimindAI"><img src="https://github.com/WikimindAI.png?size=120" width="64" height="64" alt="WikimindAI"></a><br><b>WikimindAI</b></td>
     <td align="center" width="180"><a href="https://github.com/TheSavageRebels"><img src="https://github.com/TheSavageRebels.png?size=120" width="64" height="64" alt="TheSavageRebels"></a><br><b>TheSavageRebels</b></td>
-    <td align="center" width="180"><a href="https://github.com/INSACVL"><img src="https://github.com/INSACVL.png?size=120" width="64" height="64" alt="INSA CVL"></a><br><b>INSA CVL</b></td>
+    <td align="center" width="180"><a href="https://github.com/OPENINSACVL"><img src="https://github.com/OPENINSACVL.png?size=120" width="64" height="64" alt="INSA CVL"></a><br><b>INSA CVL</b></td>
   </tr>
 </table>
 
