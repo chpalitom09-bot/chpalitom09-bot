@@ -120,7 +120,6 @@ Ce que j'ai déjà branché dans mes projets, Wikimind en tête.
     <td align="center"><img src="./assets/stack/nvidia.png" width="56" alt="NVIDIA"><br><sub>NVIDIA NIM</sub></td>
     <td align="center"><img src="./assets/stack/tavily.png" width="56" alt="Tavily"><br><sub>Tavily</sub></td>
     <td align="center"><img src="./assets/stack/brave.png" width="56" alt="Brave"><br><sub>Brave Search</sub></td>
-    <td></td>
   </tr>
 </table>
 
@@ -144,11 +143,19 @@ Ce que j'ai déjà branché dans mes projets, Wikimind en tête.
     <td align="center"><img src="./assets/stack/kaggle.png" width="56" alt="Kaggle"><br><sub>Kaggle</sub></td>
     <td align="center"><img src="./assets/stack/huggingface.png" width="56" alt="Hugging Face"><br><sub>Hugging Face</sub></td>
     <td align="center"><img src="./assets/projects/somecode.png" width="56" alt="SomeCode"><br><sub>SomeCode</sub></td>
-
-    <td></td>
   </tr>
 </table>
 
+
+## Intelligences Artificielles
+<table>
+<tr>
+  <td align="center"><img src="./assets/IA/openai.png" width="56" alt="OpenAI"><br><sub>ChatGPT</sub></td>
+  <td align="center"><img src="./assets/IA/gemini.png" width="56" alt="Alphabet"><br><sub>Gemini</sub></td>
+  <td align="center"><img src="./assets/IA/claude.png" width="56" alt="Anthropic"><br><sub>Claude</sub></td>
+  <td align="center"><img src="./assets/projects/wikimind.png" width="56" alt="Wikimind"><br><sub>Wikimind</sub></td>
+</tr>
+</table>
 <br>
 
 <p>
