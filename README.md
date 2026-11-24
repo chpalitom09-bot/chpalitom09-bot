@@ -150,9 +150,9 @@ Ce que j'ai déjà branché dans mes projets, Wikimind en tête.
 ## Intelligences Artificielles
 <table>
 <tr>
-  <td align="center"><img src="./assets/IA/openai.png" width="56" alt="OpenAI"><br><sub>ChatGPT</sub></td>
-  <td align="center"><img src="./assets/IA/gemini.png" width="56" alt="Alphabet"><br><sub>Gemini</sub></td>
-  <td align="center"><img src="./assets/IA/claude.png" width="56" alt="Anthropic"><br><sub>Claude</sub></td>
+  <td align="center"><img src="./assets/AI/openai.png" width="56" alt="OpenAI"><br><sub>ChatGPT</sub></td>
+  <td align="center"><img src="./assets/AI/gemini.png" width="56" alt="Alphabet"><br><sub>Gemini</sub></td>
+  <td align="center"><img src="./assets/AI/claude.png" width="56" alt="Anthropic"><br><sub>Claude</sub></td>
   <td align="center"><img src="./assets/projects/wikimind.png" width="56" alt="Wikimind"><br><sub>Wikimind</sub></td>
 </tr>
 </table>
