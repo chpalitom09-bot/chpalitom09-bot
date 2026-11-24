@@ -143,6 +143,8 @@ Ce que j'ai déjà branché dans mes projets, Wikimind en tête.
     <td align="center"><img src="./assets/stack/pytorch.png" width="56" alt="PyTorch"><br><sub>PyTorch</sub></td>
     <td align="center"><img src="./assets/stack/kaggle.png" width="56" alt="Kaggle"><br><sub>Kaggle</sub></td>
     <td align="center"><img src="./assets/stack/huggingface.png" width="56" alt="Hugging Face"><br><sub>Hugging Face</sub></td>
+    <td align="center"><img src=".assets/projects/somecode.png" width="56" alt="SomeCode"><br><sub>SomeCode</sub></td>
+
     <td></td>
   </tr>
 </table>
